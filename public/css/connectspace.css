@@ -1,0 +1,28 @@
+:root{
+  --canvas:#e7edec; --paper:#ffffff; --ink:#12262a; --muted:#5d7377; --line:#d3dedd;
+  --brand:#0b6e75; --brand-dark:#084f55; --like:#d9304f;
+}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--canvas);color:var(--ink);}
+.cs-nav{background:var(--ink);}
+.cs-nav .brand{color:#fff;font-weight:800;letter-spacing:-.02em;text-decoration:none;font-size:1.25rem;}
+.cs-nav .nav-user{color:#dbe7e6;text-decoration:none;display:flex;align-items:center;gap:.6rem;font-weight:600;}
+.cs-nav .nav-user:hover{color:#fff;}
+.cs-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;}
+.btn-brand{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:600;}
+.btn-brand:hover,.btn-brand:focus{background:var(--brand-dark);border-color:var(--brand-dark);color:#fff;}
+.form-control:focus{border-color:var(--brand);box-shadow:0 0 0 .2rem rgba(11,110,117,.18);}
+a{color:var(--brand);} a:hover{color:var(--brand-dark);}
+.avatar{border-radius:50%;object-fit:cover;flex:none;display:inline-block;background:var(--line);}
+.avatar-fallback{display:inline-flex;align-items:center;justify-content:center;background:var(--brand);color:#fff;font-weight:700;}
+.post-img{width:100%;max-height:480px;object-fit:cover;border-radius:10px;border:1px solid var(--line);}
+.post-text{white-space:pre-line;word-break:break-word;}
+.meta{color:var(--muted);font-size:.85rem;}
+.act-btn{background:none;border:0;padding:.25rem .6rem;border-radius:8px;color:var(--muted);font-weight:600;}
+.act-btn:hover{background:var(--canvas);}
+.act-btn.liked{color:var(--like);}
+.comment{display:flex;gap:.65rem;padding:.6rem 0;border-top:1px solid var(--line);}
+.comment-img{max-width:240px;max-height:200px;border-radius:8px;border:1px solid var(--line);margin-top:.4rem;}
+.auth-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.auth-box{width:100%;max-width:420px;}
+.auth-box .brand{font-weight:800;font-size:1.8rem;letter-spacing:-.02em;}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;}
