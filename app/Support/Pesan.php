@@ -7,6 +7,24 @@ namespace App\Support;
  */
 class Pesan
 {
+
+    public static function attributes(): array
+    {
+        return [
+            'name' => 'Nama',
+            'email' => 'Email',
+            'password' => 'Password',
+            'password_confirmation' => 'Konfirmasi password',
+            'current_password' => 'Password lama',
+            'bio' => 'Bio',
+            'avatar' => 'Foto profil',
+            'avatar_url' => 'URL foto profil',
+            'content' => 'Status',
+            'comment' => 'Komentar',
+            'image' => 'Gambar',
+            'image_url' => 'URL gambar',
+        ];
+    }
     public static function messages(): array
     {
         return [
@@ -28,23 +46,7 @@ class Pesan
         ];
     }
 
-    public static function attributes(): array
-    {
-        return [
-            'name' => 'Nama',
-            'email' => 'Email',
-            'password' => 'Password',
-            'password_confirmation' => 'Konfirmasi password',
-            'current_password' => 'Password lama',
-            'bio' => 'Bio',
-            'avatar' => 'Foto profil',
-            'avatar_url' => 'URL foto profil',
-            'content' => 'Status',
-            'comment' => 'Komentar',
-            'image' => 'Gambar',
-            'image_url' => 'URL gambar',
-        ];
-    }
+
 
     /** Aturan umum untuk input gambar: berkas + URL. */
     public static function fileRule(): array

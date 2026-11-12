@@ -16,7 +16,7 @@ class FeedController extends Controller
             ->withCount('likes')
             ->withExists(['likes as liked_by_me' => fn ($q) => $q->where('user_id', Auth::id())])
             ->orderByDesc('created_at')->orderByDesc('id') // terbaru di atas
-            ->paginate(10);
+            ->paginate(2);
 
         return view('feed.index', compact('posts'));
     }

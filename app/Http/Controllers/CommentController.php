@@ -28,4 +28,19 @@ class CommentController extends Controller
 
         return redirect(url()->previous() . '#post-' . $post->id)->with('success', 'Komentar terkirim.');
     }
+
+    public function destroy(Comment $comment)
+    {
+    // Otorisasi: hanya pemilik komentar yang boleh menghapus.
+    abort_unless($comment->user_id === Auth::id(), 403, 'Anda tidak berhak menghapus komentar ini.');
+
+                $postId = $comment->post_id;
+                $image  = $comment->image;
+
+                $comment->delete();
+                ImageStorage::delete($image); // hapus berkas gambar komentar (URL eksternal/null otomatis diabaikan)
+
+        return redirect(url()->previous() . '#post-' . $postId)
+        ->with('success', 'Komentar berhasil dihapus.');
+}
 }

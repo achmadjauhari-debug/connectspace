@@ -12,7 +12,8 @@
 <div class="auth-wrap">
     <div class="auth-box">
         <div class="brand mb-1">ConnectSpace</div>
-        <p class="meta mb-4">Masuk untuk melihat apa yang dibagikan timmu.</p>
+        <div class="brand mb-1">PPKD JP 2026</div>
+        <p class="meta mb-4">Masukan kredensial anda untuk ke beranda</p>
         @include('partials.alerts')
         <form method="POST" action="{{ route('login.attempt') }}" class="cs-card p-4" novalidate>
             @csrf
