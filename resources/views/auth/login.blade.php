@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/connectspace.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-icon.svg') }}">
 </head>
 <body>
 <div class="auth-wrap">
     <div class="auth-box">
-        <div class="brand mb-1">ConnectSpace</div>
-        <div class="brand mb-1">PPKD JP 2026</div>
-        <p class="meta mb-4">Masukan kredensial anda untuk ke beranda</p>
+        <div class="d-flex mb-3 justify-content-center"><x-logo :size="52" :tagline="true" /></div>
+        <p class="meta mb-4 text-center">Masukan kredensial anda untuk ke beranda</p>
         @include('partials.alerts')
         <form method="POST" action="{{ route('login.attempt') }}" class="cs-card p-4" novalidate>
             @csrf

@@ -16,7 +16,10 @@
     @auth
         <nav class="cs-nav py-2">
             <div class="container d-flex justify-content-between align-items-center" style="max-width:720px">
-                <a href="{{ route('feed') }}" class="brand">ConnectSpace Project </a>
+                {{-- <a href="{{ route('feed') }}" class="brand">ConnectSpace Project </a> --}}
+                <a href="{{ route('feed') }}" class="text-decoration-none">
+                    <x-logo :size="38" :dark="true" :tagline="true" />
+                </a>
                 <div class="d-flex align-items-center gap-3">
                     <a href="{{ route('profile.edit') }}" class="nav-user">
                         <x-avatar :user="auth()->user()" :size="34" />

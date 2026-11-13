@@ -7,12 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('css/connectspace.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/logo-icon.svg') }}">
 </head>
 <body>
 <div class="auth-wrap">
     <div class="auth-box">
-        <div class="brand mb-1">ConnectSpace</div>
-        <p class="meta mb-4">Buat akun dan langsung mulai berbagi.</p>
+        <div class="d-flex mb-3 justify-content-center"><x-logo :size="52" :tagline="true" /></div>
+        <p class="meta mb-4 text-center">Buat akun dan langsung mulai berbagi.</p>
         @include('partials.alerts')
         <form method="POST" action="{{ route('register.store') }}" class="cs-card p-4" novalidate>
             @csrf
