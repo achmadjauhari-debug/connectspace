@@ -10,7 +10,7 @@
                     <h1 class="h4 fw-bold mb-0">{{ $profile->name }}</h1>
                     <span class="meta" data-user-location="{{ $profile->id }}">{{ $profile->location ?: 'Lokasi belum tersedia' }}</span>
                 </div>
-                <div class="meta">Bergabung sejak {{ $profile->created_at->format('d/m/Y') }} · {{ $posts->total() }} status</div>
+                <div class="meta">Bergabung sejak {{ $profile->created_at->format('d/M/Y') }} · {{ $posts->total() }} status</div>
             </div>
             @if ($profile->id === auth()->id())
                 <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-secondary">Edit profil</a>

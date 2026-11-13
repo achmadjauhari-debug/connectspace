@@ -8,9 +8,11 @@
             <div class="flex-grow-1">
                 <div class="d-flex align-items-baseline flex-wrap gap-2">
                     <h1 class="h4 fw-bold mb-0">{{ $profile->name }}</h1>
-                    <span class="meta" data-user-location="{{ $profile->id }}">{{ $profile->location ?: 'Lokasi belum tersedia' }}</span>
+                    <span class="meta"
+                        data-user-location="{{ $profile->id }}">{{ $profile->location ?: 'Lokasi belum tersedia' }}</span>
                 </div>
-                <div class="meta">Bergabung sejak {{ $profile->created_at->format('d/m/Y') }} · {{ $posts->total() }} status</div>
+                <div class="meta">Bergabung sejak {{ $profile->created_at->format('d/M/Y') }} · {{ $posts->total() }}
+                    status</div>
             </div>
             @if ($profile->id === auth()->id())
                 <a href="{{ route('profile.edit') }}" class="btn btn-sm btn-outline-secondary">Edit profil</a>
@@ -29,14 +31,14 @@
     @forelse ($posts as $post)
         <article class="cs-card p-3 mb-3">
             <div class="mb-2">
-                <x-user-meta :user="$profile" :time="$post->created_at" :location="$post->location"
-                    :show-profile-location="false" />
+                <x-user-meta :user="$profile" :time="$post->created_at" :location="$post->location" :show-profile-location="false" />
             </div>
             @if ($post->content)
                 <p class="post-text mb-2">{{ $post->content }}</p>
             @endif
             @if ($post->image)
-                <img src="{{ $post->image_src }}" alt="Gambar status dari {{ $profile->name }}" class="post-img mb-2" loading="lazy">
+                <img src="{{ $post->image_src }}" alt="Gambar status dari {{ $profile->name }}" class="post-img mb-2"
+                    loading="lazy">
             @endif
             <div class="meta">{{ $post->likes_count }} suka · {{ $post->comments_count }} komentar</div>
         </article>
