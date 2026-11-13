@@ -125,21 +125,46 @@ a:hover {
     align-items: center;
     justify-content: center;
     padding: 1.5rem;
-    background:rgba(11, 110, 117, 0.18)
+    background: rgba(11, 110, 117, 0.18);
 }
 .auth-box {
     width: 100%;
     max-width: 420px;
-   
 }
 .auth-box .brand {
     font-weight: 800;
     font-size: 1.8rem;
     letter-spacing: normal;
-    text-align:center;
-  
+    text-align: center;
 }
 :focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 2px;
+}
+.name-link {
+    color: inherit;
+    font-weight: 700;
+    text-decoration: none;
+}
+.name-link:hover {
+    color: var(--brand);
+    text-decoration: underline;
+}
+.avatar-link {
+    display: inline-flex;
+    flex: none;
+    text-decoration: none;
+}
+.replies {
+    border-left: 2px solid var(--line);
+    margin-top: 0.35rem;
+    padding-left: 0.75rem;
+}
+.comment-reply {
+    border-top: 0;
+    padding: 0.45rem 0;
+}
+.act-sm {
+    font-size: 0.82rem;
+    padding: 0.1rem 0.5rem;
 }

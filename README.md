@@ -47,6 +47,19 @@ Implementasi soal UJK Junior Web Programmer. Isi folder ini adalah **file aplika
 > Jika `storage:link` gagal di Windows, jalankan terminal sebagai Administrator.
 > Upload gambar maksimal 2 MB (sesuai `upload_max_filesize` bawaan XAMPP).
 
+## Lokasi pada postingan
+
+Pemilik postingan dapat memilih nama kota melalui pencarian OpenStreetMap. Pencarian hanya
+dikirim saat tombol ditekan; aplikasi menyimpan nama kota, bukan koordinat. Hasil ditampilkan
+dengan atribusi OpenStreetMap. Pencarian dicache selama 30 hari dan dibatasi satu permintaan
+per detik secara global agar sesuai kebijakan layanan publik Nominatim.
+
+URL Nominatim dan identitas aplikasi dapat diganti tanpa perubahan kode melalui
+`OPENSTREETMAP_NOMINATIM_URL` dan `OPENSTREETMAP_USER_AGENT`. Pastikan cache aplikasi
+dibagikan antar proses/server jika aplikasi dijalankan pada beberapa server.
+Jika verifikasi TLS PHP tidak menemukan CA bundle, atur `OPENSTREETMAP_CA_BUNDLE`;
+XAMPP Windows otomatis memakai `apache\bin\curl-ca-bundle.crt` jika tersedia.
+
 ## Pemetaan ke soal
 
 | Ketentuan soal | Implementasi |

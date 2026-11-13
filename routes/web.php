@@ -4,10 +4,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\LocationSearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureAuthenticated;
 use App\Http\Middleware\RedirectIfLoggedIn;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CommentLikeController;
+use App\Http\Controllers\UserController;
 
 // Hanya untuk tamu (yang sudah login dialihkan ke Beranda)
 Route::middleware(RedirectIfLoggedIn::class)->group(function () {
@@ -26,9 +29,15 @@ Route::middleware(EnsureAuthenticated::class)->group(function () {
     Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])->name('posts.like');
     Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::post('/locations/search', [LocationSearchController::class, 'search'])->name('locations.search');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/location', [ProfileController::class, 'updateLocation'])->name('profile.location.update');
     Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/comments/{comment}/replies', [CommentController::class, 'reply'])->name('comments.reply');
+    Route::post('/comments/{comment}/like', [CommentLikeController::class, 'toggle'])->name('comments.like');
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
 });

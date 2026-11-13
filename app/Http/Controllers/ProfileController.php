@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Support\ImageStorage;
 use App\Support\Pesan;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -40,6 +41,26 @@ class ProfileController extends Controller
         $user->save();
 
         return redirect()->route('profile.edit')->with('success', 'Profil berhasil diperbarui.');
+    }
+
+    public function updateLocation(Request $request): JsonResponse
+    {
+        $coordinates = $request->validate([
+            'latitude' => ['required', 'numeric', 'between:-90,90'],
+            'longitude' => ['required', 'numeric', 'between:-180,180'],
+        ]);
+
+        $location = sprintf(
+            '%.4f, %.4f',
+            (float) $coordinates['latitude'],
+            (float) $coordinates['longitude'],
+        );
+
+        $user = $request->user();
+        $user->location = $location;
+        $user->save();
+
+        return response()->json(['location' => $location]);
     }
 
     public function updatePassword(Request $request)

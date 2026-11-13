@@ -10,7 +10,7 @@
             <x-avatar :user="auth()->user()" :size="44" />
             <div class="flex-grow-1">
                 <label for="content" class="visually-hidden">Status</label>
-                <textarea id="content" name="content" rows="3" maxlength="2000"
+                <textarea id="content" name="content" rows="3" data-char-limit="500"
                     class="form-control @error('content') is-invalid @enderror" placeholder="Apa yang ingin kamu bagikan?">{{ old('content') }}</textarea>
                 @error('content')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -35,7 +35,41 @@
                         @enderror
                     </div>
                 </div>
-                <div class="text-end mt-3"><button class="btn btn-brand btn-sm px-4">Kirim status</button></div>
+                <div class="mt-3">
+                    <label for="post-location" class="form-label meta">Lokasi postingan (opsional)</label>
+                    <div class="input-group input-group-sm">
+                        <input type="text" id="post-location" name="location" maxlength="100" readonly
+                            value="{{ old('location') }}" placeholder="Belum memilih kota"
+                            class="form-control @error('location') is-invalid @enderror">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse"
+                            data-bs-target="#osm-location-search">Pilih kota</button>
+                        <button type="button" id="clear-post-location" class="btn btn-outline-secondary"
+                            @if (!old('location')) hidden @endif>Hapus</button>
+                    </div>
+                    @error('location')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                    <div class="collapse mt-2" id="osm-location-search">
+                        <div class="input-group input-group-sm">
+                            <input type="search" id="location-search-query" maxlength="100"
+                                class="form-control" placeholder="Cari nama kota">
+                            <button type="button" id="search-post-location"
+                                data-search-url="{{ route('locations.search') }}"
+                                class="btn btn-outline-secondary">Cari di OpenStreetMap</button>
+                        </div>
+                        <div id="location-search-status" class="form-text" role="status" aria-live="polite"></div>
+                        <div id="location-search-results" class="list-group mt-2" role="listbox"></div>
+                        <div class="form-text">
+                            Nama kota dikirim ke OpenStreetMap hanya saat tombol ditekan. ©
+                            <a href="https://www.openstreetmap.org/copyright" target="_blank"
+                                rel="noopener noreferrer">OpenStreetMap contributors</a>.
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="meta" data-char-counter aria-live="polite" hidden></span>
+                    <button type="submit" data-char-submit class="btn btn-brand btn-sm px-4">Kirim status</button>
+                </div>
             </div>
         </div>
     </form>
@@ -44,14 +78,19 @@
     @forelse ($posts as $post)
         <article id="post-{{ $post->id }}" class="cs-card p-3 mb-3">
             <div class="d-flex align-items-center gap-3 mb-2">
-                <x-avatar :user="$post->user" :size="44" />
+                <a href="{{ route('users.show', $post->user) }}" class="avatar-link" aria-label="Lihat profil {{ $post->user->name }}">
+                    <x-avatar :user="$post->user" :size="44" />
+                </a>
                 <div class="flex-grow-1">
-                    <div class="fw-bold">{{ $post->user->name }}</div>
-                    <div class="meta">{{ $post->created_at->format('d/m/Y H:i') }}</div>
+                    <div class="d-flex align-items-baseline flex-wrap gap-2">
+                        <a href="{{ route('users.show', $post->user) }}" class="name-link">{{ $post->user->name }}</a>
+                        <x-user-meta :user="$post->user" :time="$post->created_at" :location="$post->location"
+                            :show-profile-location="false" />
+                    </div>
                 </div>
                 @if ($post->user_id === auth()->id())
                     <form method="POST" action="{{ route('posts.destroy', $post) }}"
-                        onsubmit="return confirm('Hapus status ini beserta komentarnya?')">
+                        onsubmit="konfirmasiHapus(event, 'Hapus status ini beserta komentarnya?')">
                         @csrf @method('DELETE')
                         <button class="btn btn-sm btn-outline-danger">Hapus</button>
                     </form>
@@ -74,36 +113,12 @@
                         {{ $post->liked_by_me ? '♥ Disukai' : '♡ Suka' }} · {{ $post->likes_count }}
                     </button>
                 </form>
-                <span class="meta">{{ $post->comments->count() }} komentar</span>
+                <span class="meta">{{ $post->comments_count }} komentar</span>
             </div>
 
-            {{-- Komentar --}}
-            @foreach ($post->comments as $c)
-                <div class="comment">
-                    <x-avatar :user="$c->user" :size="34" />
-                    <div class="flex-grow-1">
-                        <div class="d-flex align-items-center">
-                            <div>
-                                <span class="fw-bold">{{ $c->user->name }}</span>
-                                <span class="meta ms-1">{{ $c->created_at->format('d/m/Y H:i') }}</span>
-                            </div>
-                            @if ($c->user_id === auth()->id())
-                                <form method="POST" action="{{ route('comments.destroy', $c) }}"
-                                    onsubmit="konfirmasiHapus(event, 'Hapus komentar ini?')">
-                                    @csrf   
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm text-danger">Hapus Komentar</button>
-                                </form>
-                            @endif
-                        </div>
-                        @if ($c->comment)
-                            <div class="post-text">{{ $c->comment }}</div>
-                        @endif
-                        @if ($c->image)
-                            <img src="{{ $c->image_src }}" alt="Lampiran komentar" class="comment-img" loading="lazy">
-                        @endif
-                    </div>
-                </div>
+            {{-- Komentar utama + balasannya --}}
+            @foreach ($post->rootComments as $c)
+                @include('partials.comment', ['c' => $c, 'isReply' => false])
             @endforeach
 
             @php($bag = $errors->getBag('comment_' . $post->id))
@@ -113,12 +128,13 @@
                 <x-avatar :user="auth()->user()" :size="34" />
                 <div class="flex-grow-1">
                     <label for="comment-{{ $post->id }}" class="visually-hidden">Komentar</label>
-                    <input type="text" id="comment-{{ $post->id }}" name="comment" maxlength="1000"
+                    <input type="text" id="comment-{{ $post->id }}" name="comment" data-char-limit="500"
                         value="{{ $bag->any() ? old('comment') : '' }}" placeholder="Tulis komentar..."
                         class="form-control form-control-sm @if ($bag->has('comment')) is-invalid @endif">
                     @if ($bag->has('comment'))
                         <div class="invalid-feedback">{{ $bag->first('comment') }}</div>
                     @endif
+                    <div class="meta text-end" data-char-counter aria-live="polite" hidden></div>
                     <div class="row g-2 mt-0">
                         <div class="col-sm-6">
                             <input type="file" name="image" accept="image/*" aria-label="Gambar komentar"
@@ -137,7 +153,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-brand btn-sm align-self-start">Kirim</button>
+                <button type="submit" data-char-submit class="btn btn-brand btn-sm align-self-start">Kirim</button>
             </form>
         </article>
     @empty
